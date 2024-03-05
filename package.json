@@ -13,6 +13,9 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo-google-fonts/merriweather": "^0.2.3",
+    "@expo-google-fonts/montserrat": "^0.2.3",
+    "@expo-google-fonts/ms-madi": "^0.2.3",
     "@expo/vector-icons": "^14.0.0",
     "@react-navigation/native": "^6.0.2",
     "expo": "~50.0.8",
