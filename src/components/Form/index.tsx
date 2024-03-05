@@ -1,10 +1,18 @@
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { styles } from "./style";
 import { router } from "expo-router";
 
 export default function Form(){
     function forgetPassword(){
-        router.push('/teste/')
+        router.push('/forgePassword/')
+    }
+
+    function createUser(){
+        router.push('/create/')
+    }
+
+    function handleLogin(){
+    Alert.alert('Sucess','Login efetuado com sucesso')
     }
 
     return(
@@ -23,9 +31,9 @@ export default function Form(){
             />
             <View style={styles.others}>
                 <Text style={styles.links} onPress={forgetPassword}>Esqueceu sua senha?</Text>
-                <Text style={styles.links}>Criar Usuario</Text>
+                <Text style={styles.links} onPress={createUser}>Criar Usuario</Text>
             </View>
-            <Pressable style={styles.button}>
+            <Pressable style={styles.button} onPress={handleLogin}>
                 <Text style={styles.textButton}>LOGIN</Text>
             </Pressable>
 
