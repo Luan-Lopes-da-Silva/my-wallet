@@ -1,8 +1,21 @@
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { styles } from "./style";
 import { router } from "expo-router";
+import * as LocalAuthentication from 'expo-local-authentication';
+import { useEffect } from "react";
 
 export default function Form(){
+    async function verifyAvailableAuthentication(){
+    const hardware = await LocalAuthentication.hasHardwareAsync()
+    const types = await LocalAuthentication.supportedAuthenticationTypesAsync()
+    console.log(types)
+    console.log(hardware)
+    }
+
+    useEffect(()=>{
+        verifyAvailableAuthentication()
+    },[])
+
     function forgetPassword(){
         router.push('/forgePassword/')
     }
@@ -11,8 +24,24 @@ export default function Form(){
         router.push('/create/')
     }
 
-    function handleLogin(){
-    Alert.alert('Sucess','Login efetuado com sucesso')
+    async function handleLogin(){
+        const hasFingerPrint =  await LocalAuthentication.isEnrolledAsync()
+        if(!hasFingerPrint){
+        Alert.alert('Login','Nenhuma Biometria foi encontrada')
+        }
+
+        const auth = await LocalAuthentication.authenticateAsync({
+            promptMessage: 'Login Com Biometria',
+            fallbackLabel: 'Biometria não reconhecida'
+        })
+
+        if(auth.success){
+        Alert.alert('Login','Login realizado com sucesso')
+        setTimeout(() => {
+            router.push('/home/')
+        }, 2000);
+        }
+        
     }
 
     return(

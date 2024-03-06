@@ -18,12 +18,13 @@ export const fonts = {
       xs: 12,
       sm: 14,
       md: 16,
+      lg:28
     },
     heading: {
       xs: 16,
       sm: 18,
       md: 20,
-      lg: 24,
+      lg: 32,
       xl: 64,
     },
   },
