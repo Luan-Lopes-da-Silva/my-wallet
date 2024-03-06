@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import { Path, Svg } from "react-native-svg";
 import { useRef, useState} from "react";
 
-export default function Index(){
+export function Home(){
     const refSvg = useRef<any>(null)
     const refText = useRef<any>(null)
     const [balance,setBalance] = useState('R$ 5000,00')
