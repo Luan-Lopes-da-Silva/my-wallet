@@ -113,5 +113,8 @@ export const styles = StyleSheet.create({
         marginTop:30,
         gap:8,
         marginBottom:100
-    }
+    },
+    form:{},
+    input:{},
+    label:{},
 })

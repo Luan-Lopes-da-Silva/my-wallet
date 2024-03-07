@@ -13,6 +13,7 @@ Montserrat_400Regular,
 Montserrat_500Medium,
 Montserrat_700Bold
 } from '@expo-google-fonts/montserrat'
+
 export default function Layout(){
     const [fonstLoaded]=useFonts({
         Montserrat_700Bold,
