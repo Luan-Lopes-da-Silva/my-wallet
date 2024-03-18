@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
         paddingTop:40,
         flex:1,
         backgroundColor:theme.colors.bg,
-        paddingBottom:40
+        paddingBottom:60
     },
     balanceContainer:{
     padding:20,
@@ -112,9 +112,54 @@ export const styles = StyleSheet.create({
         flexWrap:'wrap',
         marginTop:30,
         gap:8,
-        marginBottom:100
+        marginBottom:30
     },
-    form:{},
-    input:{},
-    label:{},
+    containerSheet:{
+        flex:1,
+        marginBottom:30,
+        padding:24,
+        height:350
+    },
+    input:{
+        backgroundColor:theme.colors.inputs,
+        padding:6,
+        width:300,
+        borderRadius:theme.borderRadius.sm,
+        color:theme.colors.black,
+        marginBottom:12
+    },
+
+    label:{
+        color:theme.colors.labels,
+        marginBottom:4,
+        fontFamily:theme.fonts.montserrat.regular
+    },
+
+    form:{
+        padding:12,
+        paddingBottom:30
+    },
+    titleSheet:{
+        fontSize:theme.fonts.size.heading.lg,
+        marginBottom:12,
+        fontFamily:theme.fonts.montserrat.bold,
+        color:theme.colors.white
+    },
+    buttonSheet:{
+        marginTop:20,
+        backgroundColor:theme.colors.button,
+        width:200,
+        padding:12,
+        borderRadius:theme.borderRadius.sm,
+        borderBottomWidth:2,
+        borderTopWidth:2,
+        borderLeftWidth:2,
+        borderRightWidth:2,
+        borderColor:theme.colors.focustInputBorderAndButtonBorder
+    },
+    textButtonSheet:{
+        textAlign:'center',
+        fontFamily:theme.fonts.montserrat.medium,
+        color:theme.colors.white
+    }
 })
