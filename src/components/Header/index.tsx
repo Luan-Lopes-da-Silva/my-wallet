@@ -9,14 +9,14 @@ export default function Header(){
     }
 
     function goHome(){
-        router.back()
+        router.push('../')
     }
 
     function toggleMenu(){
         Alert.alert('ola','ola')   
     }
     return(
-        <View style={styles.container}>
+        <View style={styles.Headercontainer}>
             <Pressable
             onPress={goHome}
             >

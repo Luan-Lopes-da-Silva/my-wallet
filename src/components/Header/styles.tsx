@@ -2,7 +2,7 @@ import { theme } from "@/theme";
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-    container:{
+    Headercontainer:{
         paddingLeft:20,
         paddingRight:20,
         flexDirection:'row',

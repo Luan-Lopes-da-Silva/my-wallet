@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import { Text, TextInput, View ,Pressable} from "react-native";
 import {styles} from './styles'
+import RNPickerSelect from "react-native-picker-select";
+import { pickerSelectStyles } from "./pickerStyles";
 
 export default function newCard(){
     return(
@@ -21,8 +23,14 @@ export default function newCard(){
             style={styles.input}
             />
             <Text style={styles.label}>Selecionar bandeira do cartão</Text>
-            <TextInput
-            style={styles.input}
+            <RNPickerSelect
+                onValueChange={(value)=>console.log(value)}
+                style={pickerSelectStyles}
+                items={[
+                {label: "Mastercard", value:"Mastercard"},
+                {label: "Visa", value:"Visa"},
+                {label: "Elo", value:"Elo"},
+                ]}
             />
 
             <Pressable style={styles.button}>
@@ -32,3 +40,4 @@ export default function newCard(){
         </View>
     )
 }
+

@@ -53,5 +53,57 @@ export const styles = StyleSheet.create({
         textButton:{
             fontFamily: theme.fonts.montserrat.medium,
             color: theme.colors.white
+        },
+        radio:{
+            backgroundColor: 'gray',
+            borderRadius: 50,
+            width:40,
+            height:40,
+            alignItems: 'center'
+        },
+        radios:{
+            flexDirection: 'row',
+            gap: 12,
+        },
+        radioContainer:{
+            flexDirection:"column",
+            marginBottom:12,
+            alignItems: 'center'
+        },
+        sm:{
+            fontSize:8,
+            color: theme.colors.labels,
+            fontFamily: theme.fonts.montserrat.regular,
+            marginBottom:4
+        },
+        selectInput:{
+            marginBottom:20
+        },
+        Headercontainer:{
+            paddingLeft:20,
+            paddingRight:20,
+            flexDirection:'row',
+            alignItems:'center',
+            justifyContent:'space-between'
+        },
+        icons:{
+            flexDirection:'row',
+            alignItems:'center',
+            gap:12,
+        },
+        profile:{
+            width:20,
+            height:20,
+            objectFit:'cover'
+        },
+        toggle:{
+            width:12,
+            height:12,
+            objectFit:'cover'
+        },
+        title:{
+            color:theme.colors.white,
+            fontSize:theme.fonts.size.heading.lg,
+            fontFamily:theme.fonts.msMadi.regular,
         }
 })
