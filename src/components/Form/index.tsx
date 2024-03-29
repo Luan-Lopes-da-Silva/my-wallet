@@ -3,8 +3,35 @@ import { styles } from "./style";
 import { router } from "expo-router";
 import * as LocalAuthentication from 'expo-local-authentication';
 import { useEffect } from "react";
+import {z} from 'zod'
+import {zodResolver} from '@hookform/resolvers/zod'
+import { Controller,useForm } from "react-hook-form";
+
+
 
 export default function Form(){
+    const formSchema = z.object({
+        email: z.string().email('Por favor entre com um email valido.'),
+        password: z.string().min(1, 'A senha é obrigatória.')
+    })
+
+    type schemaForm = {
+        email: string,
+        password : string
+    }
+
+    const {control, handleSubmit} = useForm({
+        defaultValues:{
+            email: '',
+            password: '',
+        },
+        resolver : zodResolver(formSchema)
+    })
+
+    const onSubmit = (data:schemaForm) =>{
+        Alert.alert("Sucesso" , JSON.stringify(data))
+    }
+
     async function verifyAvailableAuthentication(){
     const hardware = await LocalAuthentication.hasHardwareAsync()
     const types = await LocalAuthentication.supportedAuthenticationTypesAsync()
@@ -47,22 +74,53 @@ export default function Form(){
     return(
         <View>
             <Text style={styles.label}>Email</Text>
+            <Controller
+            control={control}
+            name={'email'}
+            render={({ field: { value, onChange, onBlur }, fieldState: { error }})=>(
+            <>
+            {error && <Text style={styles.errorMessage}>
+                      {error.message}
+                      </Text>
+            }
             <TextInput
-            placeholder="email@email.com"
-            keyboardType="default"
             style={styles.input}
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            placeholder= "email@email.com"
+            keybordType = 'default'
             />
+            </>
+            )}
+            />
+
             <Text style={styles.label}>Senha</Text>
+            <Controller
+            control={control}
+            name={'password'}
+            render={({ field: { value, onChange, onBlur }, fieldState: { error }})=>(
+            <>
+            {error && <Text style={styles.errorMessage}>
+                      {error.message}
+                      </Text>
+            }
             <TextInput
-            placeholder="********"
-            keyboardType="numeric"
             style={styles.input}
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            placeholder= "**********"
+            keybordType = 'numeric'
+            />
+            </>
+            )}
             />
             <View style={styles.others}>
                 <Text style={styles.links} onPress={forgetPassword}>Esqueceu sua senha?</Text>
                 <Text style={styles.links} onPress={createUser}>Criar Usuario</Text>
             </View>
-            <Pressable style={styles.button} onPress={handleLogin}>
+            <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
                 <Text style={styles.textButton}>LOGIN</Text>
             </Pressable>
 

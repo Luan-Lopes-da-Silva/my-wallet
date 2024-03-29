@@ -24,7 +24,7 @@ export default function Splash({onComplete}:Props){
         <Video
         style={StyleSheet.absoluteFill}
         resizeMode={ResizeMode.COVER}
-        source={require('../../assets/splash.mp4')}
+        source={require('../../assets/loading.mp4')}
         isLooping={false}
         onPlaybackStatusUpdate={onPlaybackStatusUpdate}
         shouldPlay={true}

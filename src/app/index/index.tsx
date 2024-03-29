@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import { Home } from "../home";
+import {Login} from "../login"
 import { styles } from "./styles";
 import Splash from "@/components/Splash/Splash";
 import { useState } from "react";
@@ -10,7 +11,7 @@ export default function App(){
     return(
         
         <View style={styles.container}>
-            {splashComplete? <Home/>: <Splash onComplete={setSplashComplete}/>}
+            {splashComplete? <Login/>: <Splash onComplete={setSplashComplete}/>}
         </View>
     )
 }
