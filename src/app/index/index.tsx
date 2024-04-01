@@ -1,17 +1,22 @@
-import { Text, View } from "react-native";
-import { Home } from "../home";
-import {Login} from "../login"
+import { View } from "react-native";
+import Login from "../login"
 import { styles } from "./styles";
-import Splash from "@/components/Splash/Splash";
-import { useState } from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { useState ,useEffect} from "react";
+import { User, getAuth } from "firebase/auth";
+import Home from "../home";
+
 
 export default function App(){
-    const [splashComplete,setSplashComplete] = useState(false)
+   
+    const [user,setUser] = useState<User | null>(null)
+    useEffect(()=>{
+        const subscriber = getAuth().onAuthStateChanged(setUser)
+        return subscriber
+    },[])
+
     return(
-        
         <View style={styles.container}>
-            {splashComplete? <Login/>: <Splash onComplete={setSplashComplete}/>}
+            {user? <Home/>: <Login/>}
         </View>
     )
 }

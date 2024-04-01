@@ -55,5 +55,8 @@ subtitle:{
    fontSize:theme.fonts.size.heading.md,
    color:theme.colors.white,
    marginBottom:20
+},
+errorMessage:{
+   
 }
 })

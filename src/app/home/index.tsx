@@ -2,11 +2,20 @@ import { ScrollView, Pressable, StatusBar, Text, View, TextInput } from "react-n
 import { styles } from "./styles";
 import Header from "@/components/Header";
 import { Path, Svg } from "react-native-svg";
-import { useRef, useState} from "react";
+import { useEffect, useRef, useState} from "react";
 import { router } from "expo-router";
+import {getAuth} from 'firebase/auth'
 
 
-export function Home(){
+
+export default function Home(){
+    useEffect(()=>{
+        function currentUser(){
+            const auth = getAuth()
+            console.log(auth.currentUser?.email)
+        }
+        currentUser()
+    },[])
     const refSvg = useRef<any>(null)
     const refText = useRef<any>(null)
     const [balance,setBalance] = useState('R$ 5000,00')
@@ -45,10 +54,6 @@ export function Home(){
         setViewBox('0 -960 960 960')
     }
     }
-
-   
-
-  
 
     return(
         <ScrollView style={styles.container}>

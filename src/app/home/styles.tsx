@@ -3,14 +3,15 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     container:{
-        paddingTop:40,
+        paddingTop:60,
         flex:1,
         backgroundColor:theme.colors.bg,
-        paddingBottom:60
+        paddingBottom:100,
+       
     },
     balanceContainer:{
     padding:20,
-    marginTop:30,
+    marginTop:70,
     backgroundColor:theme.colors.inputBorder,
     width:400,
     alignSelf:'center',
@@ -112,7 +113,7 @@ export const styles = StyleSheet.create({
         flexWrap:'wrap',
         marginTop:30,
         gap:8,
-        marginBottom:30
+        marginBottom:90
     },
     containerSheet:{
         flex:1,

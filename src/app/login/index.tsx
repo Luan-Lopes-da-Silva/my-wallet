@@ -2,7 +2,7 @@ import {View,Text,StatusBar} from 'react-native'
 import { style } from './styles'
 import Form from '@/components/Form'
 
-export function Login(){
+export default function Login(){
     return(
     <View style={style.container}>
     <StatusBar barStyle={'dark-content'}/>

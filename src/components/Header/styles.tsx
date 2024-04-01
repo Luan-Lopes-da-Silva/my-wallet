@@ -7,12 +7,16 @@ export const styles = StyleSheet.create({
         paddingRight:20,
         flexDirection:'row',
         alignItems:'center',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
     },
     icons:{
         flexDirection:'row',
         alignItems:'center',
         gap:12,
+        position: 'relative',
+        width:77,
+        padding:6,
+        justifyContent: 'space-between'
     },
     profile:{
         width:20,
@@ -28,5 +32,15 @@ export const styles = StyleSheet.create({
         color:theme.colors.white,
         fontSize:theme.fonts.size.heading.lg,
         fontFamily:theme.fonts.msMadi.regular,
+    },
+    hideMenu:{
+        display: 'none',
+        flexDirection:'column',
+        position: 'absolute',
+        top:32,
+        backgroundColor: theme.colors.inputBorder,
+        alignItems: 'center',       
+        padding: 6,
+        gap: 12,
     }
 })

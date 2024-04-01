@@ -2,13 +2,24 @@ import { Pressable, Text, TextInput, View ,Alert} from "react-native";
 import { styles } from "./style";
 import { router } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import {getAuth, sendPasswordResetEmail} from 'firebase/auth'
+import { useState } from "react";
 
 export default function ForgetPassword(){
+    const [email,setEmail] = useState('')
     function previousPage(){
         router.back()
     }
+    
     function changePassword(){
-        Alert.alert('Sucess' , 'Senha alterada com sucesso')
+       const auth = getAuth()
+       sendPasswordResetEmail(auth,email)
+       .then(()=>{
+        Alert.alert('Sucesso', 'Verifique sua caixa de email especialmente sua caixa de spams.')
+       })
+       .catch((error)=>{
+        Alert.alert('Erro', `Erro no envio do email de redefinição verifique seu email ${error}`)
+       })
     }
 
     return(
@@ -26,14 +37,9 @@ export default function ForgetPassword(){
             placeholder="email@email.com"
             keyboardType="default"
             style={styles.input}
+            value={email}
+            onChangeText={email=>setEmail(email)}
             />
-            <Text style={styles.label}>Nova senha</Text>
-            <TextInput
-            placeholder="********"
-            keyboardType="numeric"
-            style={styles.input}
-            />
-
             <Pressable style={styles.button} onPress={changePassword}>
                 <Text style={styles.textButton}>TROCAR SENHA</Text>
             </Pressable>

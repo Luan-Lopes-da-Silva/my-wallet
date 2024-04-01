@@ -1,8 +1,7 @@
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { styles } from "./style";
 import { router } from "expo-router";
-import * as LocalAuthentication from 'expo-local-authentication';
-import { useEffect } from "react";
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth'
 import {z} from 'zod'
 import {zodResolver} from '@hookform/resolvers/zod'
 import { Controller,useForm } from "react-hook-form";
@@ -28,21 +27,23 @@ export default function Form(){
         resolver : zodResolver(formSchema)
     })
 
-    const onSubmit = (data:schemaForm) =>{
-        Alert.alert("Sucesso" , JSON.stringify(data))
+    const onSubmit = async (data:schemaForm) =>{
+        const auth = getAuth()
+        signInWithEmailAndPassword(auth,data.email,data.password)
+        .then((userCredentials)=>{
+            const user = userCredentials.user
+            console.log(user)
+            Alert.alert('Login efetuado com sucesso', `Login efetuado com sucesso`)
+            setTimeout(() => {
+                router.push('/home/')
+            }, 1000);
+        })
+        .catch((error)=>{
+            const errorMessage = error.message;
+            console.log(errorMessage)
+        })
     }
-
-    async function verifyAvailableAuthentication(){
-    const hardware = await LocalAuthentication.hasHardwareAsync()
-    const types = await LocalAuthentication.supportedAuthenticationTypesAsync()
-    console.log(types)
-    console.log(hardware)
-    }
-
-    useEffect(()=>{
-        verifyAvailableAuthentication()
-    },[])
-
+    
     function forgetPassword(){
         router.push('/forgePassword/')
     }
@@ -51,25 +52,7 @@ export default function Form(){
         router.push('/create/')
     }
 
-    async function handleLogin(){
-        const hasFingerPrint =  await LocalAuthentication.isEnrolledAsync()
-        if(!hasFingerPrint){
-        Alert.alert('Login','Nenhuma Biometria foi encontrada')
-        }
 
-        const auth = await LocalAuthentication.authenticateAsync({
-            promptMessage: 'Login Com Biometria',
-            fallbackLabel: 'Biometria não reconhecida'
-        })
-
-        if(auth.success){
-        Alert.alert('Login','Login realizado com sucesso')
-        setTimeout(() => {
-            router.push('/home/')
-        }, 2000);
-        }
-        
-    }
 
     return(
         <View>
@@ -89,7 +72,7 @@ export default function Form(){
             onChangeText={onChange}
             onBlur={onBlur}
             placeholder= "email@email.com"
-            keybordType = 'default'
+            keyboardType = 'default'
             />
             </>
             )}
@@ -111,7 +94,7 @@ export default function Form(){
             onChangeText={onChange}
             onBlur={onBlur}
             placeholder= "**********"
-            keybordType = 'numeric'
+            keyboardType = 'default'
             />
             </>
             )}

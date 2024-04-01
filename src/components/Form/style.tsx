@@ -46,5 +46,8 @@ export const styles = StyleSheet.create({
     textButton:{
         fontFamily: theme.fonts.montserrat.medium,
         color: theme.colors.white
+    },
+    errorMessage:{
+        
     }
 })

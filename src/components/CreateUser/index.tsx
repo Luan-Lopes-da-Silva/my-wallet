@@ -5,6 +5,8 @@ import { router } from "expo-router";
 import {z} from 'zod'
 import {zodResolver} from  '@hookform/resolvers/zod'
 import {Controller, useForm} from 'react-hook-form'
+import { getAuth,createUserWithEmailAndPassword } from "firebase/auth";
+
 
 export default function CreateUser(){
     const formSchema = z.object({
@@ -27,17 +29,24 @@ export default function CreateUser(){
         resolver: zodResolver(formSchema)
     })
 
-    const onSubmit = (data:any) =>{
-        Alert.alert('Sucesso', JSON.stringify(data))
+    type UserSchema = {
+        name: string,
+        email: string,
+        password: string
+    }
+
+    const onSubmit = async (data:UserSchema) =>{
+        const auth = getAuth()
+        createUserWithEmailAndPassword(auth,data.email,data.password)
+        .then(()=>{
+            Alert.alert('Sucesso', 'Usuario criado com sucesso verifique sua caixa de spams para verificar seu email.')
+        })
     }
 
     function handleBackPage(){
         router.back()
     }
 
-    function handleRegister(){
-        Alert.alert('Sucess','Usuario criado com sucesso')
-    }
 
     return(
         <View style={styles.container}>
@@ -54,7 +63,7 @@ export default function CreateUser(){
                 <Controller
                 control={control}
                 name={'name'}
-                render={({ field: { value, onChange, onBlur }, fieldState: { error }})=>(
+                render={({ field: { onBlur ,value,onChange}, fieldState: { error }})=>(
                 <>
                 {error && <Text style={styles.errorMessage}>
                           {error.message}
@@ -76,7 +85,7 @@ export default function CreateUser(){
                 <Controller
                 control={control}
                 name={'email'}
-                render={({ field: { value, onChange, onBlur }, fieldState: { error }})=>(
+                render={({ field: { onBlur,value,onChange }, fieldState: { error }})=>(
                 <>
                 {error && <Text style={styles.errorMessage}>
                           {error.message}
@@ -87,7 +96,7 @@ export default function CreateUser(){
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                keyboardtype = 'email-address'
+                keyboardType = 'email-address'
                 placeholder = 'emai@email.com'
                 />
                 </>
@@ -98,7 +107,7 @@ export default function CreateUser(){
                 <Controller
                 control={control}
                 name={'password'}
-                render={({ field: { value, onChange, onBlur }, fieldState: { error }})=>(
+                render={({ field: { onBlur ,value,onChange}, fieldState: { error }})=>(
                 <>
                 {error && <Text style={styles.errorMessage}>
                           {error.message}
@@ -109,7 +118,7 @@ export default function CreateUser(){
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                keyboardtype = 'numeric'
+                keyboardType = 'numeric'
                 placeholder = '*******'
                 />
                 </>
@@ -121,7 +130,7 @@ export default function CreateUser(){
                     <Controller
                 control={control}
                 name={'confirm_password'}
-                render={({ field: { value, onChange, onBlur }, fieldState: { error }})=>(
+                render={({ field: { onBlur ,onChange,value}, fieldState: { error }})=>(
                 <>
                 {error && <Text style={styles.errorMessage}>
                           {error.message}
@@ -132,7 +141,7 @@ export default function CreateUser(){
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                keyboardtype = 'numeric'
+                keyboardType = 'numeric'
                 placeholder = '*******'
                 />
                 </>
