@@ -6,16 +6,15 @@ export const styles = StyleSheet.create({
         paddingTop:60,
         flex:1,
         backgroundColor:theme.colors.bg,
-        paddingBottom:100,
-       
+        position: 'relative'
     },
     balanceContainer:{
     padding:20,
-    marginTop:70,
     backgroundColor:theme.colors.inputBorder,
     width:400,
     alignSelf:'center',
-    borderRadius:12
+    borderRadius:12,
+    marginTop:60,
     },
     balance:{
     flexDirection:'row',
@@ -162,5 +161,21 @@ export const styles = StyleSheet.create({
         textAlign:'center',
         fontFamily:theme.fonts.montserrat.medium,
         color:theme.colors.white
+    },
+    verifyContainer:{
+        padding: 10,
+        alignSelf:'center',
+        backgroundColor: '#ffb703',
+        width:420
+    },
+    scrollViewContent:{
+        flexGrow:1,
+        justifyContent: 'space-between',
+    },
+    warning:{
+        marginBottom:12,
+        color: theme.colors.white,
+        fontFamily: theme.fonts.montserrat.regular
     }
+
 })

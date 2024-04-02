@@ -80,8 +80,8 @@ export default function Header(){
             style={styles.hideMenu}
             ref={refHideMenu}
             >
-                <Pressable><Text>Meu perfil</Text></Pressable>
-                <Pressable onPress={signOut}><Text>Sair</Text></Pressable>
+                <Pressable><Text style={styles.textMenu}>Meu perfil</Text></Pressable>
+                <Pressable onPress={signOut}><Text style={styles.textMenu}>Sair</Text></Pressable>
             </View>
            </View>
         </View>

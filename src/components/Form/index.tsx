@@ -95,6 +95,7 @@ export default function Form(){
             onBlur={onBlur}
             placeholder= "**********"
             keyboardType = 'default'
+            secureTextEntry = {true}
             />
             </>
             )}

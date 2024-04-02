@@ -1,4 +1,4 @@
-import { Alert, Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Pressable, Text, TextInput, View ,KeyboardAvoidingView,Platform,TouchableWithoutFeedback,Keyboard} from "react-native";
 import { styles } from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -14,9 +14,6 @@ export default function CreateUser(){
         email: z.string().email('Por favor entre com um email valido.'),
         password: z.string().min(1, 'A senha é obrigatória.'),
         confirm_password: z.string().min(1, "A confirmação é obrigatória")
-    }).refine(({ password, confirm_password}) => password === confirm_password, {
-        message: "Senhas não combinam",
-        path: ["confirm_password"]
     })
 
     const {control,handleSubmit} = useForm({
@@ -24,7 +21,6 @@ export default function CreateUser(){
             name: '',
             email: '',
             password: '',
-            confirm_password: '',
         },
         resolver: zodResolver(formSchema)
     })
@@ -51,7 +47,10 @@ export default function CreateUser(){
 
 
     return(
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}
+        behavior= "padding"
+        keyboardVerticalOffset= {Platform.OS === 'ios' ? 250 : 0}
+        >
             <MaterialIcons
             size={32}
             name="arrow-back"
@@ -61,8 +60,10 @@ export default function CreateUser(){
             <Text style={styles.title}>MyWallet</Text>
             <View>
                 <Text style={styles.subtitle}>Registro de usuario</Text>
+                
                 <Text style={styles.label}>Nome</Text>
-                <Controller
+               
+                    <Controller
                 control={control}
                 name={'name'}
                 render={({ field: { onBlur ,value,onChange}, fieldState: { error }})=>(
@@ -120,31 +121,9 @@ export default function CreateUser(){
                 value={value}
                 onChangeText={onChange}
                 onBlur={onBlur}
-                keyboardType = 'numeric'
+                keyboardType = 'default'
                 placeholder = '*******'
-                />
-                </>
-                )}
-                />
-                <Text 
-                style={styles.label}
-                >Confirmar senha</Text>
-                    <Controller
-                control={control}
-                name={'confirm_password'}
-                render={({ field: { onBlur ,onChange,value}, fieldState: { error }})=>(
-                <>
-                {error && <Text style={styles.errorMessage}>
-                          {error.message}
-                          </Text>
-                }
-                <TextInput
-                style={styles.input}
-                value={value}
-                onChangeText={onChange}
-                onBlur={onBlur}
-                keyboardType = 'numeric'
-                placeholder = '*******'
+                secureTextEntry = {true}
                 />
                 </>
                 )}
@@ -158,6 +137,6 @@ export default function CreateUser(){
                     >REGISTRAR</Text>
                 </Pressable>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     )
 }

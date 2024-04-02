@@ -53,5 +53,12 @@ export const styles = StyleSheet.create({
         textButton:{
             fontFamily: theme.fonts.montserrat.medium,
             color: theme.colors.white
+        },
+        errorMessage:{
+            fontFamily:theme.fonts.merriweather.regular,
+            color: '#d90429',
+            fontSize:10,
+            marginTop:3,
+            marginBottom:3
         }
 })

@@ -5,11 +5,12 @@ export const styles = StyleSheet.create({
     title:{
         color: theme.colors.white,
         fontFamily: theme.fonts.msMadi.regular,
-        fontSize : theme.fonts.size.heading.xl,
-        marginTop: 42,
+        fontSize : theme.fonts.size.heading.lg,
+        marginTop: 12,
         textAlign:'center',
-        marginBottom: 40,
-        width:300
+        marginBottom: 12,
+        width:300,
+        alignSelf: 'center'
      },
 
     icon:{
@@ -53,5 +54,12 @@ export const styles = StyleSheet.create({
         fontSize:theme.fonts.size.heading.md,
         color:theme.colors.white,
         marginBottom:20
-     }
+     },
+     errorMessage:{
+        fontFamily:theme.fonts.merriweather.regular,
+        color: '#d90429',
+        fontSize:10,
+        marginTop:3,
+        marginBottom:3
+    }
 })

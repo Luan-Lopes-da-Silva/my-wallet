@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import { Path, Svg } from "react-native-svg";
 import { useEffect, useRef, useState} from "react";
 import { router } from "expo-router";
-import {getAuth} from 'firebase/auth'
+import {getAuth,sendEmailVerification} from 'firebase/auth'
 
 export default function Home(){
     const [isVerified,setIsVerified] = useState('')
@@ -66,8 +66,18 @@ export default function Home(){
     }
     }
 
+    function sendVerifyEmail(){
+    const currentUser = getAuth().currentUser
+    if(currentUser){
+        sendEmailVerification(currentUser)
+        Alert.alert('Email enviado','Email de verificação enviado cheque também sua caixa de spams.')
+
+    }
+    }
+
     return(
-        <ScrollView style={styles.container}>
+       <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <StatusBar barStyle={"dark-content"}/>
             <Header/>
             <View style={styles.balanceContainer}>
@@ -126,15 +136,7 @@ export default function Home(){
             </View>
             </View>
 
-            {isVerified === 'Foi verificado'?
-            <View>
-                <Text>Foi verificado</Text>
-            </View>
-            :
-            <View>
-                <Text>Não foi verificado</Text>
-            </View>
-            }
+           
            <View style={styles.buttons}>
            <Pressable 
            style={styles.button}
@@ -153,12 +155,21 @@ export default function Home(){
             <Text style={styles.textButton}>NOVO CARTÃO</Text>
            </Pressable>
            </View>
-
          
-        
-  
-            
         </ScrollView>
+
+        {isVerified == 'Foi verificado'?
+        <></>
+        :
+        <View style={styles.verifyContainer}>
+            <Text style={styles.warning}>Seu email não foi verificado clique no botão para verificar.</Text>
+            <Pressable style={styles.button} onPress={sendVerifyEmail}>
+                <Text style={styles.textButton}>VERIFICAR</Text>
+            </Pressable>
+        </View>
+        }
+
+       </View>
     )
 }
 

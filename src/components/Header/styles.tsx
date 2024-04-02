@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
         alignItems:'center',
         gap:12,
         position: 'relative',
-        width:77,
+        width:83,
         padding:6,
         justifyContent: 'space-between'
     },
@@ -42,5 +42,9 @@ export const styles = StyleSheet.create({
         alignItems: 'center',       
         padding: 6,
         gap: 12,
+    },
+    textMenu:{
+        color: theme.colors.white,
+        fontFamily: theme.fonts.montserrat.regular
     }
 })
