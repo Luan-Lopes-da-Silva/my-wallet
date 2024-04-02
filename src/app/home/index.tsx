@@ -1,4 +1,4 @@
-import { ScrollView, Pressable, StatusBar, Text, View, TextInput } from "react-native";
+import { ScrollView, Pressable, StatusBar, Text, View, TextInput, Alert } from "react-native";
 import { styles } from "./styles";
 import Header from "@/components/Header";
 import { Path, Svg } from "react-native-svg";
@@ -6,13 +6,24 @@ import { useEffect, useRef, useState} from "react";
 import { router } from "expo-router";
 import {getAuth} from 'firebase/auth'
 
-
-
 export default function Home(){
+    const [isVerified,setIsVerified] = useState('')
+
+
     useEffect(()=>{
         function currentUser(){
             const auth = getAuth()
-            console.log(auth.currentUser?.email)
+            const user = auth.currentUser
+            if(user){
+                if(user.emailVerified){
+                    setIsVerified('Foi verificado')
+                }else{
+                    setIsVerified('Não foi verificado')
+                }
+            }else{
+                Alert.alert('Erro', 'Não tem nenhum usuario autenticado.')
+                router.push('/login/')
+            }
         }
         currentUser()
     },[])
@@ -114,6 +125,16 @@ export default function Home(){
                 <Text style={styles.gain}>16:44</Text>
             </View>
             </View>
+
+            {isVerified === 'Foi verificado'?
+            <View>
+                <Text>Foi verificado</Text>
+            </View>
+            :
+            <View>
+                <Text>Não foi verificado</Text>
+            </View>
+            }
            <View style={styles.buttons}>
            <Pressable 
            style={styles.button}
@@ -132,6 +153,8 @@ export default function Home(){
             <Text style={styles.textButton}>NOVO CARTÃO</Text>
            </Pressable>
            </View>
+
+         
         
   
             
