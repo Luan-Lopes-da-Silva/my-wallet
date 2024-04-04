@@ -18,8 +18,7 @@ export const styles = StyleSheet.create({
     },
     balance:{
     flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center',
+    
     marginTop:80,
     marginBottom:20
     },
@@ -37,7 +36,9 @@ export const styles = StyleSheet.create({
     value:{
         fontSize:theme.fonts.size.heading.lg,
         fontFamily:theme.fonts.montserrat.bold,
-        color:theme.colors.white
+        color:theme.colors.white,
+        flex:1,
+        textAlign: 'right'
     },
     cards:{
     marginTop:30,
@@ -64,7 +65,7 @@ export const styles = StyleSheet.create({
        paddingTop:24,
        paddingBottom:24,
        borderRadius:12,
-        marginTop:30,
+       marginTop:30, 
     },
     gains:{
         fontSize:theme.fonts.size.body.lg,
@@ -75,8 +76,8 @@ export const styles = StyleSheet.create({
     row:{
         flexDirection:'row',
         justifyContent:'space-between',
-        gap:40,
-        padding:20
+        gap:20,
+        paddingHorizontal:20,
     },
     gain:{
         fontSize:theme.fonts.size.body.sm,

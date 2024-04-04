@@ -1,9 +1,8 @@
 'use client'
 import Header from "@/components/Header";
-import { Alert, Pressable, Text, TextInput, View } from "react-native";
+import {Pressable, Text, TextInput, View } from "react-native";
 import {styles} from './styles'
-import { useState } from "react";
-import { router } from "expo-router";
+
 import {z} from 'zod'
 import {zodResolver} from  '@hookform/resolvers/zod'
 import {Controller, useForm} from 'react-hook-form'
