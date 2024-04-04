@@ -10,7 +10,7 @@ import {db} from '../firebaseConfig'
 import { getAuth } from "firebase/auth";
 import {styles} from '@/styles/enter'
 
-export default function teste2() {
+export default function Teste2() {
   const formSchema = z.object({
     title: z.string().min(1, 'O nome é obrigatório.'),
     value: z.string().min(1,'O valor é obrigatório.'),

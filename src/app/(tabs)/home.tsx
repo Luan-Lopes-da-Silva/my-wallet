@@ -3,13 +3,13 @@
 import { ScrollView, Pressable, StatusBar, Text, View,Alert } from "react-native";
 import { styles } from "@/styles/home";
 import Header from "@/components/Header";
-import {  useEffect, useState} from "react";
-import { router } from "expo-router";
+import React, {  useEffect, useState} from "react";
+import { router, useFocusEffect } from "expo-router";
 import {getAuth,sendEmailVerification} from 'firebase/auth'
 import { db } from "../firebaseConfig";
 import {collection, getDocs,query,where} from "firebase/firestore"
 
-export default function main(){
+export default function Main(){
     const [isVerified,setIsVerified] = useState('')
     const [expanses, setExpanses] = useState<Expanse[]>([])
     const [gains, setGains] = useState<Gains[]>([])
@@ -17,6 +17,7 @@ export default function main(){
     const [balance,setBalance] = useState('')
     const [monthExpansesUser,setMonthExpansesUser] = useState<any[]>([])
     const [monthExpanse,setMonthExpanse] = useState('')
+    const [totalBalance,setTotalBalance] = useState('')
    
   
     type Expanse = {
@@ -59,127 +60,135 @@ export default function main(){
         currentUser()
     },[])
     
-    useEffect(()=>{
+
+    useFocusEffect(
+        React.useCallback(()=>{
+        setExpanses([])
         async function getExpanseFromCurrentUser() {
-        const auth = getAuth().currentUser?.uid
+            const auth = getAuth().currentUser?.uid
+    
+            const expanseFilter = query(collection(db, "expanses"), where("ownerExpanse", "==" , auth))
+    
+            const querySnapshot = await getDocs(expanseFilter)
+    
+            
+            querySnapshot.forEach((doc)=>{
+                const currentExpanse = doc.data()
+            
+                const newItem:Expanse= {
+                    expanseName:currentExpanse.expanseName,
+                    expanseValue: currentExpanse.expanseValue,
+                    paymentData: currentExpanse.paymentData,
+                    index: Math.random() * 1000,
+                    hourEnter: currentExpanse.hourEnter
+                }            
+                setExpanses(prevExpanses=> [...prevExpanses,newItem])
+            })
+            }
+    
+            getExpanseFromCurrentUser()
+        },[])
+    )
 
-        const expanseFilter = query(collection(db, "expanses"), where("ownerExpanse", "==" , auth))
+    
 
-        const querySnapshot = await getDocs(expanseFilter)
-
+  
+    useFocusEffect(
+        React.useCallback(()=>{
+            async function monthExpanses() {
+                const auth = getAuth().currentUser?.uid
+                
+                const expansesFilter = query(collection(db, "expanses"), where("ownerExpanse", "==" , auth))
         
-        querySnapshot.forEach((doc)=>{
-            const currentExpanse = doc.data()
+                const querySnapshot = await getDocs(expansesFilter)
+                
+                const expansesArray:any[] = []
         
-            const newItem:Expanse= {
-                expanseName:currentExpanse.expanseName,
-                expanseValue: currentExpanse.expanseValue,
-                paymentData: currentExpanse.paymentData,
-                index: Math.random() * 1000,
-                hourEnter: currentExpanse.hourEnter
-            }            
-            setExpanses(prevExpanses=> [...prevExpanses,newItem])
-        })
-        }
-
-        getExpanseFromCurrentUser()
-    },[])
-
-    useEffect(()=>{
-        async function balanceCurrentUser() {
-        const auth = getAuth().currentUser?.uid
-        
-        const gainsFilter = query(collection(db, "gains"), where("ownerGains", "==" , auth))
-
-        const querySnapshot = await getDocs(gainsFilter)
-        
-        const balancesArray:any[] = []
-
-        querySnapshot.forEach((doc)=>{
-            const currentGains = doc.data()
-            const converseBalance = stringForIntNumber(currentGains.gainValue)
-            balancesArray.push(converseBalance)
-        })
-
-        setBalances(balancesArray)
-        }
-
-        balanceCurrentUser()
-    },[])
-
-    useEffect(()=>{
-        const sumBalances = balances.reduce((acc,cur)=>{
-            return acc+cur
-        },0)
-        setBalance(`R$ ${sumBalances},00`)
-    },[balances])
-
-    useEffect(()=>{
-        async function monthExpanses() {
-        const auth = getAuth().currentUser?.uid
-        
-        const expansesFilter = query(collection(db, "expanses"), where("ownerExpanse", "==" , auth))
-
-        const querySnapshot = await getDocs(expansesFilter)
-        
-        const expansesArray:any[] = []
-
-        querySnapshot.forEach((doc)=>{
-            const currentExpanses = doc.data()
-            const converseExpanse = stringForIntNumber(currentExpanses.expanseValue)
-            expansesArray.push(converseExpanse)
-            setMonthExpansesUser(expansesArray)
-        })
-        }
-
-        monthExpanses()
-    },[])
+                querySnapshot.forEach((doc)=>{
+                    const currentExpanses = doc.data()
+                    const converseExpanse = stringForIntNumber(currentExpanses.expanseValue)
+                    expansesArray.push(converseExpanse)
+                })
+                setMonthExpansesUser(expansesArray)
+                }
+                monthExpanses()
+        },[])
+    )
 
     useEffect(()=>{
         const sumExpanses = monthExpansesUser.reduce((acc,cur)=>{
             return acc+cur
         },0)
-       setMonthExpanse(`- R$ ${sumExpanses},00`)
+        setMonthExpanse(sumExpanses)
     }, [monthExpansesUser])
-  
-  
+
+    useFocusEffect(
+        React.useCallback(()=>{
+            async function balanceCurrentUser() {
+                const auth = getAuth().currentUser?.uid
+                
+                const gainsFilter = query(collection(db, "gains"), where("ownerGains", "==" , auth))
+        
+                const querySnapshot = await getDocs(gainsFilter)
+                
+                const balancesArray:any[] = []
+        
+                querySnapshot.forEach((doc)=>{
+                    const currentGains = doc.data()
+                    const converseBalance = stringForIntNumber(currentGains.gainValue)
+                    balancesArray.push(converseBalance)
+                })
+                setBalances(balancesArray)
+                }
+        
+                balanceCurrentUser()
+        },[])
+    )
 
 
     useEffect(()=>{
-        async function getGainsFromCurrentUser() {
-        const auth = getAuth().currentUser?.uid
+        const sumBalances = balances.reduce((acc,cur)=>{
+            return acc+cur
+        },0)
+        const totalSum = Number(sumBalances) - Number(monthExpanse)
+        setTotalBalance(`${totalSum}`)
+        setBalance(sumBalances)
+    },[balances])
+  
 
-        const gainsFilter = query(collection(db, "gains"), where("ownerGains", "==" , auth))
-
-        const querySnapshot = await getDocs(gainsFilter)
-
+    useFocusEffect(
+        React.useCallback(()=>{
+            setGains([])
+            async function getGainsFromCurrentUser() {
+                const auth = getAuth().currentUser?.uid
         
-        querySnapshot.forEach((doc)=>{
-            const currentGains = doc.data()
+                const gainsFilter = query(collection(db, "gains"), where("ownerGains", "==" , auth))
         
-            const newItem:Gains= {
-                gainName:currentGains.gainName,
-                gainValue: currentGains.gainValue,
-                enterDate: currentGains.enterDate,
-                index: Math.random() * 1000,
-                hourEnter: currentGains.hourEnter
-            }            
-            setGains(prevGains=>[...prevGains,newItem])
-        })
-        }
-
-
-        getGainsFromCurrentUser()
-    },[])
-
-
+                const querySnapshot = await getDocs(gainsFilter)
+        
+                
+                querySnapshot.forEach((doc)=>{
+                    const currentGains = doc.data()
+                
+                    const newItem:Gains= {
+                        gainName:currentGains.gainName,
+                        gainValue: currentGains.gainValue,
+                        enterDate: currentGains.enterDate,
+                        index: Math.random() * 1000,
+                        hourEnter: currentGains.hourEnter
+                    }            
+                    setGains(prevGains=>[...prevGains,newItem])
+                })
+                }   
+                getGainsFromCurrentUser()
+        },[])
+    )
 
     function sendVerifyEmail(){
     const currentUser = getAuth().currentUser
     if(currentUser){
         sendEmailVerification(currentUser)
         Alert.alert('Email enviado','Email de verificação enviado cheque também sua caixa de spams.')
-
     }
     }
 
@@ -195,7 +204,7 @@ export default function main(){
                 </View>
                 <View style={styles.balance}>
                     <Text style={styles.value}>
-                       {balance}
+                    R$ {totalBalance},00
                     </Text>
                 </View>
             </View>
@@ -203,12 +212,12 @@ export default function main(){
             <View style={styles.card}>
                 <Text style={styles.title}>Despesas</Text>
                 <Text style={styles.title}>Mensais</Text>
-                <Text style={styles.expanse}>{monthExpanse}</Text>
+                <Text style={styles.expanse}>- R$ {monthExpanse},00</Text>
             </View>
             <View style={styles.card}>
                 <Text style={styles.title}>Entradas</Text>
                 <Text style={styles.title}>Mensais</Text>
-                <Text style={styles.gains}>{balance}</Text>
+                <Text style={styles.gains}>R$ {balance},00</Text>
             </View>
             </View>
             

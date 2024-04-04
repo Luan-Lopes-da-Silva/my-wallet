@@ -11,7 +11,7 @@ import {z} from 'zod'
 import {zodResolver} from  '@hookform/resolvers/zod'
 import {Controller, useForm} from 'react-hook-form'
 
-export default function teste() {
+export default function Teste() {
   function formatHour(){
     const currentDate = new Date()
     const hour =  String(currentDate.getHours()).padStart(2, '0')

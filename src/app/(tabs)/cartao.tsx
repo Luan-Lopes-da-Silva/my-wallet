@@ -6,7 +6,8 @@ import { pickerSelectStyles } from "@/styles/pickerStyles";
 import {z} from 'zod'
 import {zodResolver} from  '@hookform/resolvers/zod'
 import {Controller, useForm} from 'react-hook-form'
-export default function meeting() {
+
+export default function Meeting() {
   const formSchema = z.object({
     name: z.string().min(1, 'O nome é obrigatório.'),
     balance: z.string().min(1,'O saldo é obrigatório.'),
