@@ -37,7 +37,6 @@ export const styles = StyleSheet.create({
         borderRightWidth: 2,
         borderColor: theme.colors.inputBorder
         },
-
         button:{
            width:250,
             backgroundColor:theme.colors.button,

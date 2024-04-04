@@ -1,17 +1,15 @@
+'use client'
+
 import { ScrollView, Pressable, StatusBar, Text, View,Alert } from "react-native";
-import { styles } from "./styles";
+import { styles } from "@/styles/home";
 import Header from "@/components/Header";
-import { Path, Svg } from "react-native-svg";
-import {  useEffect, useRef, useState} from "react";
+import {  useEffect, useState} from "react";
 import { router } from "expo-router";
 import {getAuth,sendEmailVerification} from 'firebase/auth'
 import { db } from "../firebaseConfig";
 import {collection, getDocs,query,where} from "firebase/firestore"
 
-
-
-
-export default function Home(){
+export default function main(){
     const [isVerified,setIsVerified] = useState('')
     const [expanses, setExpanses] = useState<Expanse[]>([])
     const [gains, setGains] = useState<Gains[]>([])
@@ -175,19 +173,6 @@ export default function Home(){
     },[])
 
 
-    
-    function newEnter(){
-    router.push('/enter/')    
-    }
-
-    function newExpanse(){
-    router.push('/expanse/')
-    }
-
-    function newCard(){
-    router.push('/card/')
-    }
-
 
     function sendVerifyEmail(){
     const currentUser = getAuth().currentUser
@@ -199,11 +184,9 @@ export default function Home(){
     }
 
 
-
-
     return(
        <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <ScrollView >
         <StatusBar barStyle={"dark-content"}/>
             <Header/>
             <View style={styles.balanceContainer}>
@@ -253,30 +236,8 @@ export default function Home(){
                 ))}   
                 </View>
             )}
-              
-
+            
            
-         
-
-           
-           <View style={styles.buttons}>
-           <Pressable 
-           style={styles.button}
-           onPress={newExpanse}
-           >
-            <Text style={styles.textButton}>NOVA DESPESA</Text>
-           </Pressable>
-           <Pressable style={styles.button}
-           onPress={newEnter}
-           >
-            <Text style={styles.textButton}>NOVA ENTRADA</Text>
-           </Pressable>
-           <Pressable style={styles.button}
-           onPress={newCard}
-           >
-            <Text style={styles.textButton}>NOVO CARTÃO</Text>
-           </Pressable>
-           </View>
          
         </ScrollView>
 
@@ -290,8 +251,6 @@ export default function Home(){
             </Pressable>
         </View>
         }
-
        </View>
     )
 }
-

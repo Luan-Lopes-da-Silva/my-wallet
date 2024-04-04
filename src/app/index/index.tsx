@@ -3,7 +3,7 @@ import Login from "../login"
 import { styles } from "./styles";
 import { useState ,useEffect} from "react";
 import { User, getAuth } from "firebase/auth";
-import Home from "../home";
+import Home from "../home/home";
 
 
 export default function App(){
@@ -16,7 +16,7 @@ export default function App(){
 
     return(
         <View style={styles.container}>
-            {user? <Home/>: <Login/>}
+        {user?<Home/>: <Login/>}
         </View>
     )
 }

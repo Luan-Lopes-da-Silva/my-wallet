@@ -35,7 +35,7 @@ export default function Form(){
             console.log(user)
             Alert.alert('Login efetuado com sucesso', `Login efetuado com sucesso`)
             setTimeout(() => {
-                router.push('/home/')
+                router.push('/(tabs)/home')
             }, 1000);
         })
         .catch((error)=>{
