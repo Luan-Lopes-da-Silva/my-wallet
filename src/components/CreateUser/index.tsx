@@ -33,7 +33,6 @@ export default function CreateUser(){
 
     const onSubmit = async (data:UserSchema) =>{
         const auth = getAuth()
-        const user = auth.currentUser
         
         createUserWithEmailAndPassword(auth,data.email,data.password)
         .then(()=>{

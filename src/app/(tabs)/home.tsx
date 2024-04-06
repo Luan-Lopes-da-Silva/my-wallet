@@ -4,12 +4,17 @@ import { ScrollView, Pressable, StatusBar, Text, View,Alert } from "react-native
 import { styles } from "@/styles/home";
 import Header from "@/components/Header";
 import React, {  useEffect, useState} from "react";
-import { router, useFocusEffect } from "expo-router";
+import { router, useFocusEffect} from "expo-router";
 import {getAuth,sendEmailVerification} from 'firebase/auth'
 import { db } from "../firebaseConfig";
 import {collection, getDocs,query,where} from "firebase/firestore"
+import { FlatList } from "react-native";
+import { theme } from "@/theme";
+import { Button } from "react-native";
+import { useNavigation } from 'expo-router';
 
 export default function Main(){
+    const navigation:any = useNavigation();
     const [isVerified,setIsVerified] = useState('')
     const [expanses, setExpanses] = useState<Expanse[]>([])
     const [gains, setGains] = useState<Gains[]>([])
@@ -18,7 +23,8 @@ export default function Main(){
     const [monthExpansesUser,setMonthExpansesUser] = useState<any[]>([])
     const [monthExpanse,setMonthExpanse] = useState('')
     const [totalBalance,setTotalBalance] = useState('')
-   
+    const [goals,setGoals] = useState<Goal[]>([])
+
   
     type Expanse = {
         expanseName: string,
@@ -28,6 +34,14 @@ export default function Main(){
         hourEnter: string,
     }
 
+    type Goal = {
+        goalTitle: string,
+        goalValue: string,
+        reached: string,
+        goalOwner: string,
+        id: string
+    }
+
     type Gains = {
         gainName: string,
         gainValue : string,
@@ -35,6 +49,9 @@ export default function Main(){
         index: number ,
         hourEnter: string   
     }
+    
+    
+
 
     function stringForIntNumber(string:string){
         const intNumber = string.replace(/,.*S/, '')
@@ -59,7 +76,11 @@ export default function Main(){
         }
         currentUser()
     },[])
-    
+
+
+    async function update() {
+        
+    }
 
     useFocusEffect(
         React.useCallback(()=>{
@@ -70,7 +91,6 @@ export default function Main(){
             const expanseFilter = query(collection(db, "expanses"), where("ownerExpanse", "==" , auth))
     
             const querySnapshot = await getDocs(expanseFilter)
-    
             
             querySnapshot.forEach((doc)=>{
                 const currentExpanse = doc.data()
@@ -90,9 +110,36 @@ export default function Main(){
         },[])
     )
 
-    
+    useFocusEffect(
+        React.useCallback(()=>{
+            setGoals([])
 
-  
+            async function getGoalsFromUser(){
+
+            const auth = getAuth().currentUser?.uid
+    
+            const goalFilter = query(collection(db, "goals"), where("goalOwner", "==" , auth))
+    
+            const querySnapshot = await getDocs(goalFilter)
+
+            querySnapshot.forEach((doc)=>{
+              
+                const currentGoal = doc.data()
+            
+                const newItem:Goal= {
+                  goalTitle: currentGoal.goalTitle,
+                  goalValue:currentGoal.goalValue,
+                  reached: currentGoal.reached,
+                  goalOwner: currentGoal.goalOwner,
+                  id: currentGoal.id
+                }            
+                setGoals(prevGoals=> [...prevGoals,newItem])
+            })
+            }
+            getGoalsFromUser()
+        },[])
+    )
+
     useFocusEffect(
         React.useCallback(()=>{
             async function monthExpanses() {
@@ -245,6 +292,35 @@ export default function Main(){
                 ))}   
                 </View>
             )}
+            <Pressable onPress={update}>
+                <Text>Update</Text>
+            </Pressable>
+
+            <FlatList
+            data={goals}
+            horizontal={true}
+            renderItem={({item})=> 
+                <View style={styles.goals}>
+                    <View key={item.id} style={styles.goal}>
+                    <Text style={styles.goalsTitle}>{item.goalTitle}</Text>
+                    <View style={styles.progressBar}>
+                        <View style={{position:'absolute',
+                        backgroundColor:theme.colors.bg,
+                        height:30,
+                        borderRadius: theme.borderRadius.lg
+                        }}>
+                        </View>
+                    </View>
+                    <Text style={styles.goalValue}>R$ {item.goalValue},00</Text>
+                    <Text>{item.id}</Text>
+                    <Button
+                    title="VER"
+                    onPress={() => navigation.navigate('DetailsScreen',{id:item.id})}
+                    />
+                    </View>
+                </View>
+            }
+            />
             
            
          

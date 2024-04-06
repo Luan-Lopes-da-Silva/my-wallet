@@ -119,6 +119,40 @@ export const styles = StyleSheet.create({
         marginBottom:12,
         color: theme.colors.white,
         fontFamily: theme.fonts.montserrat.regular
+    },
+    goal:{
+        backgroundColor: theme.colors.inputBorder,
+        padding:24,
+        flexDirection:'column',
+        gap:12,
+        borderRadius: theme.borderRadius.md
+    },
+    goals:{
+        flexDirection:"column",
+        marginBottom:50,
+        marginTop:20,
+       marginLeft:20,
+       marginRight:30
+    },
+    goalsTitle:{
+    fontSize:theme.fonts.size.heading.md,
+    color: theme.colors.white
+    },
+    goalValue:{
+        fontSize:theme.fonts.size.heading.sm,
+        color: theme.colors.gains  
+    },
+    progressBar:{
+    width:150,
+    height:30,
+    backgroundColor:theme.colors.focusInput,
+    borderRadius: theme.borderRadius.lg,
+    position: 'relative'
+    },
+    progress:{
+    position: 'absolute',
+    backgroundColor: theme.colors.bg,
+    height:30,
+    borderRadius: theme.borderRadius.lg
     }
-
 })

@@ -64,6 +64,14 @@ export default function TabLayout(){
                     )
                  }}
                  />
+                 <Tabs.Screen 
+                 name="metas"
+                 options={{
+                    tabBarIcon:({size,color})=>(
+                        <MaterialIcons name="sports-score" size={size} color={color}/>
+                    )
+                 }}
+                 />
              </Tabs>
         ):(
             <Login/>
