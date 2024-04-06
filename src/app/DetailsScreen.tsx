@@ -2,7 +2,7 @@
 
 import { Pressable, Text, View ,TextInput, Alert} from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { addDoc,query ,collection,where,getDocs, doc, updateDoc} from "firebase/firestore";
+import { addDoc,query ,collection,where,getDocs, doc, updateDoc, getDoc, increment} from "firebase/firestore";
 import { db } from "./firebaseConfig";
 import React, { useEffect, useState } from "react";
 import {styles} from '@/styles/detailsScreen'
@@ -11,7 +11,6 @@ import { theme } from "@/theme";
 import {z} from 'zod'
 import {zodResolver} from  '@hookform/resolvers/zod'
 import {Controller, useForm} from 'react-hook-form'
-import firestore from '@react-native-firebase/firestore';
 
 type Goal = {
     goalTitle: string,
@@ -43,21 +42,38 @@ type GoalSchema = {
 
 
 const onSubmit = async (data:GoalSchema) =>{
-    const expanseFilter = query(collection(db, "increase-goals"), where("idGoal", "==" , id))
+try {
+const expanseFilter = query(collection(db, "increase-goals"), where("idGoal", "==" , id))
+const querySnapshot2 = await getDocs(expanseFilter)
+const auxiliarArray:number[]= []
+querySnapshot2.forEach((doc)=>{
+const currentGoal = doc.data()
+auxiliarArray.push(Number(currentGoal.incrementValue))
+})
+const sumIncrements = auxiliarArray.reduce((acc,cur)=>{
+    return acc+cur
+},0)
 
-    const querySnapshot = await getDocs(expanseFilter)
-    const auxiliarArray:number[]= []
-    querySnapshot.forEach((doc)=>{
-    const currentGoal = doc.data()
-    auxiliarArray.push(Number(currentGoal.incrementValue))
-    })
-    const sumIncrements = auxiliarArray.reduce((acc,cur)=>{
-        return acc+cur
-    },0)
+const percentReached = (Number(data.incrementValue) + sumIncrements)/100
+setReached(`${percentReached}`)
 
-    const percentReached = (Number(data.incrementValue) + sumIncrements)/100
+await addDoc(collection(db,"increase-goals"),{
+    idGoal: id,
+    incrementValue: data.incrementValue
+})
 
-    setReached(percentReached)
+const q = query(collection(db, "goals"), where("id", "==", id));
+const querySnapshot = await getDocs(q);
+querySnapshot.forEach(async(document) => {
+const docRef = doc(db, "goals" , document.id)
+await updateDoc(docRef,{
+    reached:percentReached
+})
+})
+Alert.alert("Sucesso", "Incremento feito com sucesso")
+} catch (error) {
+console.log('Erro na requisição' + error) 
+}
 }
 
 useEffect(()=>{
@@ -90,11 +106,12 @@ useEffect(()=>{
 
         querySnapshot.forEach((doc)=>{
         const currentGoal = doc.data()
-        const newItem:Goal= {
+        const newItem = {
             goalTitle : currentGoal.goalTitle,
             goalValue : currentGoal.goalValue,
+            reached: currentGoal.reached
         }
-
+        setReached(newItem.reached)
         setName(newItem.goalTitle)
         setValue(newItem.goalValue)
         })
