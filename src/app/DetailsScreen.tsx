@@ -67,7 +67,7 @@ const querySnapshot = await getDocs(q);
 querySnapshot.forEach(async(document) => {
 const docRef = doc(db, "goals" , document.id)
 await updateDoc(docRef,{
-    reached:percentReached
+    reached:`${percentReached}`
 })
 })
 Alert.alert("Sucesso", "Incremento feito com sucesso")
@@ -133,6 +133,7 @@ useEffect(()=>{
             backgroundColor:theme.colors.gains,
             height:30,
             borderRadius: theme.borderRadius.lg,
+            width: `${reached}%`
             }}
             >
             </View>

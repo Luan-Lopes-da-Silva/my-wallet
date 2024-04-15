@@ -292,9 +292,6 @@ export default function Main(){
                 ))}   
                 </View>
             )}
-            <Pressable onPress={update}>
-                <Text>Update</Text>
-            </Pressable>
 
             <FlatList
             data={goals}
@@ -305,14 +302,14 @@ export default function Main(){
                     <Text style={styles.goalsTitle}>{item.goalTitle}</Text>
                     <View style={styles.progressBar}>
                         <View style={{position:'absolute',
-                        backgroundColor:theme.colors.bg,
                         height:30,
-                        borderRadius: theme.borderRadius.lg
+                        borderRadius: theme.borderRadius.lg,
+                        width: `${item.reached}%`,
+                        backgroundColor: theme.colors.inputs
                         }}>
                         </View>
                     </View>
                     <Text style={styles.goalValue}>R$ {item.goalValue},00</Text>
-                    <Text>{item.id}</Text>
                     <Button
                     title="VER"
                     onPress={() => navigation.navigate('DetailsScreen',{id:item.id})}
